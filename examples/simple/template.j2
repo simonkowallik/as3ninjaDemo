@@ -7,7 +7,7 @@
     "schemaVersion": "3.11.0",
     "id": "a-unique-id",
     "label": {{ninja.declaration.label|jsonify}},
-    "remark": "{{ ninja.declaration.remark | jsonify(quote=False) }}, git commit:{{ ninja.as3ninja.git.commit.id }}",
+    "remark": "{{ ninja.declaration.remark | jsonify(quote=False) }}, git commit:{{ ninja.as3ninja.git.commit.id_short }}",
     "{{ ninja.tenant.name }}": {
       "class": "Tenant",
 {%- for app in ninja.tenant.applications %}
