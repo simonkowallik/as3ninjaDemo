@@ -3,9 +3,9 @@
 
 Huh, what's this?
 
-Check out: [https://github.com/simonkowallik/as3ninja](/simonkowallik/as3ninja)
+Check out: [/simonkowallik/as3ninja](https://github.com/simonkowallik/as3ninja)
 
-Documentation at: [https://as3ninja.readthedocs.io](as3ninja.readthedocs.io)
+Documentation at: [as3ninja.readthedocs.io](https://as3ninja.readthedocs.io)
 
 
 ## explore examples/
