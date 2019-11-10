@@ -12,7 +12,7 @@ Documentation at: [as3ninja.readthedocs.io](https://as3ninja.readthedocs.io)
 
 ```shell
 .
-├── README.md
+├── README.md  <--- You are here!
 ├── examples
 │   ├── simple
 │   │   ├── README.md
@@ -69,6 +69,23 @@ curl -sX POST http://localhost:8000/api/declaration/transform/git \
   | jq .
 ```
 
+validate the generated declaration:
+```shell
+curl -sX POST http://localhost:8000/api/declaration/transform/git \
+  -H "Content-Type: application/json" -d \
+  '{"repository":"https://github.com/simonkowallik/as3ninjaDemo"}' \
+    | curl -sX POST http://localhost:8000/api/schema/validate \
+    -H "Content-Type: application/json" -d@-
+```
+
+demonstrate a validation failure by using an older schema version:
+```shell
+curl -sX POST http://localhost:8000/api/declaration/transform/git \
+  -H "Content-Type: application/json" -d \
+  '{"repository":"https://github.com/simonkowallik/as3ninjaDemo"}' \
+    | curl -sX POST "http://localhost:8000/api/schema/validate?version=3.8.1" \
+    -H "Content-Type: application/json" -d@-
+```
 
 ## or httpie
 
@@ -76,3 +93,30 @@ curl -sX POST http://localhost:8000/api/declaration/transform/git \
 http http://localhost:8000/api/declaration/transform/git \
   repository=https://github.com/simonkowallik/as3ninjaDemo
 ```
+
+validate the generated declaration:
+```shell
+http http://localhost:8000/api/declaration/transform/git \
+  repository=https://github.com/simonkowallik/as3ninjaDemo \
+  | http http://localhost:8000/api/schema/validate
+```
+
+demonstrate a validation failure by using an older schema version:
+```shell
+http http://localhost:8000/api/declaration/transform/git \
+  repository=https://github.com/simonkowallik/as3ninjaDemo \
+  | http "http://localhost:8000/api/schema/validate?version=3.8.1"
+```
+
+
+## how does it work?
+
+POSTing the below JSON body to `/api/declaration/transform/git` instructs AS3 Ninja to fetch the repo and create an AS3 declaration based on the default configuration files in the repository. AS3 Ninja checks for the following files `ninja.json`, [`ninja.yaml`](ninja.yaml), `ninja.yml` and uses the first file it finds.
+
+```json
+{
+  "repository": "https://github.com/simonkowallik/as3ninjaDemo"
+}
+```
+
+The response is the AS3 declaration, which can be validated against the AS3 schema. The latest available schema (in the docker container) is used by default, a specific version can be specified using the `version` query parameter, as demonstrated above.
